@@ -3,30 +3,34 @@
 
 ## Respondendo Questões:
 
-1. Qual​ ​ o ​ ​ objetivo​ ​ do​ ​ comando​ ​ cache​ ​ em​ ​ Spark?
+1. **Qual​ ​ o ​ ​ objetivo​ ​ do​ ​ comando​ ​ cache​ ​ em​ ​ Spark?**
+
 O objetivo é colocar o dataset em memória cache. As memórias caches (L1, L2 e L3) possuem uma performace bem superior do que a memória RAM. Em um cluster de computadores, a quantidade de memória cache é bastante significante, tendo em vista que em um computador comercial a memória cache é bem pequena, abaixo dos 10MB.
 Colocar os dados em memória cache é muito útil quando o dado é acessado repetidamente, desde quando a operação realizada é uma busca em um pequeno dataset até operações iterativas de algoritmos de machine learning.
+--- 
+2. **O​ ​ mesmo​ ​ código​ ​ implementado​ ​ em​ ​ Spark​ ​ é ​ ​ normalmente​ ​ mais​ ​ rápido​ ​ que​ ​ a ​ ​ implementação​ ​quivalente​ ​ em MapReduce.​ ​ Por​ ​ quê?**
 
-2. O​ ​ mesmo​ ​ código​ ​ implementado​ ​ em​ ​ Spark​ ​ é ​ ​ normalmente​ ​ mais​ ​ rápido​ ​ que​ ​ a ​ ​ implementação​ ​ equivalente​ ​ em
-MapReduce.​ ​ Por​ ​ quê?
 Porque o código implementado em Spark roda em memória, já o código MapReduce precisa ler e escrever em disco. A velocidade de leitura em memória é muito mais rápido do que em disco.
+---
+3. **Qual​ ​ é ​ ​ a ​ ​ função​ ​ do​ ​ SparkContext​ ?**
 
-3. Qual​ ​ é ​ ​ a ​ ​ função​ ​ do​ ​ SparkContext​ ?
 A função do SparkContext é criar um ponto de entrada para qualquer funcionalidade do Apache Spark. É o objeto central que coordena as aplicações Spark em um cluster. A partir da criação de um SparkContext é possivel se conectar ao gerenciador do cluster.
 Um fato relevante, é que só é possível criar um SparkContext.
+---
+4. **Explique​ ​ com​ ​ suas​ ​ palavras​ ​ ​ o ​ ​ que​ ​ é ​ ​ Resilient​ ​ Distributed​ ​ Datasets​​ ​ (RDD).**
 
-4. Explique​ ​ com​ ​ suas​ ​ palavras​ ​ ​ o ​ ​ que​ ​ é ​ ​ Resilient​ ​ Distributed​ ​ Datasets​​ ​ (RDD).
 É o objeto base do Spark, que é distribuido entre os DataNodes em um cluster. A partir do objeto RDD, é possível armazenar e processar dados de forma distribuída.
+---
+5. **GroupByKey​ ​ é ​ ​ menos​ ​ eficiente​ ​ que​ ​ reduceByKey​ ​ em​ ​ grandes​ ​ dataset.​ ​ Por​ ​ quê?**
 
-5. GroupByKey​ ​ é ​ ​ menos​ ​ eficiente​ ​ que​ ​ reduceByKey​ ​ em​ ​ grandes​ ​ dataset.​ ​ Por​ ​ quê?
 A utilização de ambas funções chegam ao mesmo resultado. Entretando, como dito, reduceByKey é mais eficiente pois quando ocorre o processo de redução, os pares em uma mesma partição são combinados (as chaves que possuem o mesmo valor são combinadas), e isso é realizado antes do embaralhamento. Apenas uma saída para cada chave em uma partição é enviado para o processo de embaralhamento. Essa tarefa otimiza o processamento de redução.
-
+---
 ## Explique​ ​ o ​ ​ que​ ​ o ​ ​ código​ ​ Scala​ ​ abaixo​ ​ faz.
 ``` scala
 val​​ textFile​​ ​= ​sc​.textFile​ ("hdfs://...")
 val​​ ​counts​​ ​= textFile​.flatMap​(line => line.split(" "))
-		  .map(word => (word, 1))
-		  .reduceByKey​(_+_)
+            		 .map(word => (word, 1))
+            		 .reduceByKey​(_+_)
 counts​.saveAsTextFile​("hdfs://..."​)
 ```
 
@@ -36,10 +40,10 @@ counts​.saveAsTextFile​("hdfs://..."​)
 **val​​ ​counts​​ ​= textFile​.flatMap​(line => line.split(" "))**
 - A partir do objeto RDD textFile, é aplicada a função flatMap, que realiza um map de uma função (que no caso é a função .split()) de forma mais profunda, aplicando um flatten antes do mapeamento (utilizado quando temos uma lista dentro de outra lista). O flatMap aplicada a função split em todas as linhas, o separador das palavras é o " " (espaço), que é valor que está presente entre as palavras. O resultado dessa operação é a criação de um objeto com as palavras.
 
-**		  .map(word => (word, 1))**
+**.map(word => (word, 1))**
 - Aqui é realizado o mapeamento de cada palavra, para um par de "chave: valor".
 
-**		  .reduceByKey​(_+_)**
+**.reduceByKey​(_+_)**
 - Aqui ocorre o processo de redução por chave. O resultado final desse processo é um par de "chave: quantidade de aparições da palavra no objeto textFile".
 
 **counts​.saveAsTextFile​("hdfs://..."​)**
@@ -47,14 +51,15 @@ counts​.saveAsTextFile​("hdfs://..."​)
 
 
 ## HTTP​ ​ requests​ ​ to​ ​ the​ ​ NASA​ ​ Kennedy​ ​ Space​ ​ Center​ ​ WWW​ ​ server
----
+
 **Fonte​ ​ oficial​ ​ do​ ​ dateset​ : ​ ​ http://ita.ee.lbl.gov/html/contrib/NASA-HTTP.html**
+
 **Dados​:**
 
-**Sobre o dataset​**: Esses dois conjuntos de dados possuem todas as requisições HTTP para o servidor da NASA Kennedy
-Space​ ​ Center​ ​ WWW​ ​ na​ ​ Flórida​ ​ para​ ​ um​ ​ período​ ​ específico.
----
+**Sobre o dataset​**: Esses dois conjuntos de dados possuem todas as requisições HTTP para o servidor da NASA Kennedy Space​ ​ Center​ ​ WWW​ ​ na​ ​ Flórida​ ​ para​ ​ um​ ​ período​ ​ específico.
+
 Os​ ​ logs​ ​ estão​ ​ em​ ​ arquivos​ ​ ASCII​ ​ com​ ​ uma​ ​ linha​ ​ por​ ​ requisição​ ​ com​ ​ as​ ​ seguintes​ ​ colunas:
+
 - **Host fazendo a requisição​**. Um hostname quando possível, caso contrário o endereço de internet se o nome
 não​ ​ puder​ ​ ser​ ​ identificado.
 - **Timestamp​** no​ formato​ ​ "DIA/MÊS/ANO:HH:MM:SS​ ​ TIMEZONE"
@@ -62,13 +67,12 @@ não​ ​ puder​ ​ ser​ ​ identificado.
 - **Código​ ​ do​ ​ retorno​ ​ HTTP**
 - **Total​ ​ de​ ​ bytes​ ​ retornados**
 
-##Questões
-​Responda​ ​ as​ ​ seguintes​ ​ questões​ ​ devem​ ​ ser​ ​ desenvolvidas​ ​ em​ ​ Spark​ ​ utilizando​ ​ a ​ ​ sua​ ​ linguagem​ ​ de​ ​ preferência.
+## Questões
+​**Responda​ ​ as​ ​ seguintes​ ​ questões​ ​ devem​ ​ ser​ ​ desenvolvidas​ ​ em​ ​ Spark​ ​ utilizando​ ​ a ​ ​ sua​ ​ linguagem​ ​ de​ ​ preferência.**
 1. Número​ ​ de​ ​ hosts​ ​ únicos.
 2. O​ ​ total​ ​ de​ ​ erros​ ​ 404.
 3. Os​ ​ 5 ​ ​ URLs​ ​ que​ ​ mais​ ​ causaram​ ​ erro​ ​ 404.
 4. Quantidade​ ​ de​ ​ erros​ ​ 404​ ​ por​ ​ dia.
-
 
 
 # Respondendo Questões
@@ -102,8 +106,8 @@ totalErros404WithSQL = spSession.sql("SELECT COUNT(COD_HTTP) as COUNT_HTTP_ERROR
                                       FROM dataset WHERE COD_HTTP = 404").first()
 ```
 
-    CPU times: user 3.4 ms, sys: 160 µs, total: 3.56 ms
-    Wall time: 1.34 s
+    CPU times: user 4.36 ms, sys: 227 µs, total: 4.59 ms
+    Wall time: 2.12 s
 
 
 
@@ -120,8 +124,8 @@ print("Total de error '404': {}".format(totalErros404WithSQL[0]))
 totalErros404WithFilter = dataset_final.filter("COD_HTTP == 404").count()
 ```
 
-    CPU times: user 1.18 ms, sys: 55 µs, total: 1.24 ms
-    Wall time: 1.32 s
+    CPU times: user 957 µs, sys: 389 µs, total: 1.35 ms
+    Wall time: 1.83 s
 
 
 
@@ -152,15 +156,15 @@ for i in range(0,5):
 
     As 5 URLs que mais causaram erro 404:
     
-    1º: url: 'hoohoo.ncsa.uiuc.edu' com '251' erros 404
+    1º: url:'hoohoo.ncsa.uiuc.edu' com '251' erros 404
     
-    2º: url: 'piweba3y.prodigy.com' com '156' erros 404
+    2º: url:'piweba3y.prodigy.com' com '156' erros 404
     
-    3º: url: 'jbiagioni.npt.nuwc.navy.mil' com '132' erros 404
+    3º: url:'jbiagioni.npt.nuwc.navy.mil' com '132' erros 404
     
-    4º: url: 'piweba1y.prodigy.com' com '114' erros 404
+    4º: url:'piweba1y.prodigy.com' com '114' erros 404
     
-    5º: url: 'www-d4.proxy.aol.com' com '91' erros 404
+    5º: url:'www-d4.proxy.aol.com' com '91' erros 404
     
 
 
@@ -259,7 +263,7 @@ ax.set_ylabel('Quantidade de erros')
 
 
 ```python
-totalBytes = spSession.sql("SELECT COUNT(TOTAL_BYTES) as TOTAL_BYTES FROM dataset").first()
+totalBytes = spSession.sql("SELECT SUM(TOTAL_BYTES) as TOTAL_BYTES FROM dataset").first()
 ```
 
 
@@ -267,7 +271,7 @@ totalBytes = spSession.sql("SELECT COUNT(TOTAL_BYTES) as TOTAL_BYTES FROM datase
 print("Total de bytes: {}".format(totalBytes[0]))
 ```
 
-    Total de bytes: 3461612
+    Total de bytes: 65524319796.0
 
 
 # FIM
