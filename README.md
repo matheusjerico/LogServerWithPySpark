@@ -7,24 +7,24 @@
 
 O objetivo é colocar o dataset em memória cache. As memórias caches (L1, L2 e L3) possuem uma performace bem superior do que a memória RAM. Em um cluster de computadores, a quantidade de memória cache é bastante significante, tendo em vista que em um computador comercial a memória cache é bem pequena, abaixo dos 10MB.
 Colocar os dados em memória cache é muito útil quando o dado é acessado repetidamente, desde quando a operação realizada é uma busca em um pequeno dataset até operações iterativas de algoritmos de machine learning.
---- 
+
 2. **O​ ​ mesmo​ ​ código​ ​ implementado​ ​ em​ ​ Spark​ ​ é ​ ​ normalmente​ ​ mais​ ​ rápido​ ​ que​ ​ a ​ ​ implementação​ ​quivalente​ ​ em MapReduce.​ ​ Por​ ​ quê?**
 
 Porque o código implementado em Spark roda em memória, já o código MapReduce precisa ler e escrever em disco. A velocidade de leitura em memória é muito mais rápido do que em disco.
----
+
 3. **Qual​ ​ é ​ ​ a ​ ​ função​ ​ do​ ​ SparkContext​ ?**
 
 A função do SparkContext é criar um ponto de entrada para qualquer funcionalidade do Apache Spark. É o objeto central que coordena as aplicações Spark em um cluster. A partir da criação de um SparkContext é possivel se conectar ao gerenciador do cluster.
 Um fato relevante, é que só é possível criar um SparkContext.
----
+
 4. **Explique​ ​ com​ ​ suas​ ​ palavras​ ​ ​ o ​ ​ que​ ​ é ​ ​ Resilient​ ​ Distributed​ ​ Datasets​​ ​ (RDD).**
 
 É o objeto base do Spark, que é distribuido entre os DataNodes em um cluster. A partir do objeto RDD, é possível armazenar e processar dados de forma distribuída.
----
+
 5. **GroupByKey​ ​ é ​ ​ menos​ ​ eficiente​ ​ que​ ​ reduceByKey​ ​ em​ ​ grandes​ ​ dataset.​ ​ Por​ ​ quê?**
 
 A utilização de ambas funções chegam ao mesmo resultado. Entretando, como dito, reduceByKey é mais eficiente pois quando ocorre o processo de redução, os pares em uma mesma partição são combinados (as chaves que possuem o mesmo valor são combinadas), e isso é realizado antes do embaralhamento. Apenas uma saída para cada chave em uma partição é enviado para o processo de embaralhamento. Essa tarefa otimiza o processamento de redução.
----
+
 ## Explique​ ​ o ​ ​ que​ ​ o ​ ​ código​ ​ Scala​ ​ abaixo​ ​ faz.
 ``` scala
 val​​ textFile​​ ​= ​sc​.textFile​ ("hdfs://...")
