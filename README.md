@@ -1,5 +1,4 @@
-## LinkedIn: https://www.linkedin.com/in/matheusjerico
-## E-mail: matheusjerico1994@hotmail.com
+#### LinkedIn: https://www.linkedin.com/in/matheusjerico
 
 ## Respondendo Questões:
 
